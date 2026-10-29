@@ -51,6 +51,11 @@ const samples = [
   ['850 TL900 TL', [[850, 'TRY'], [900, 'TRY']]],
   // harf komşuluğu hâlâ yasak
   ['500 TLsize özel', []],
+  // sayının ortasından başlayan eşleşme yok — Amazon fırsat kartı "3.499"+"00"+"TL"
+  ['3.49900TL', []],
+  ['1.29990 TL', []],
+  ['3.499,00TL', [[3499, 'TRY']]],
+  ['1,299.00$', [[1299, 'USD']]],
   // küçük harfli kodlar para birimi değil — "try 3 times" TRY 3 sanılmamalı
   ['try 3 times', []],
   ['please try 2 more', []],

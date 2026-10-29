@@ -62,6 +62,15 @@
 
   /** Regex eşleşmesinden { amount, currency, text } çıkarır; anlamsızsa null. */
   function readMatch(match) {
+    // Bir sayının ortasından başlayan eşleşme fiyat değildir. Amazon fırsat
+    // kartlarında ondalık ayırıcı hiç yazılmıyor ("3.499" + "00" + "TL");
+    // regex "3.499"u alamayınca "49900TL"yi buluyor, fiyat 14 katına çıkıyordu.
+    // Yanlış fiyat göstermektense hiç çevirmemek iyidir.
+    if (match.input && match.index > 0) {
+      const before = match.input.slice(Math.max(0, match.index - 2), match.index);
+      if (/\d$|\d[.,]$/.test(before)) return null;
+    }
+
     const symbolToken = match[1] || match[4];
     const numberToken = match[2] || match[3];
     if (!symbolToken || !numberToken) return null;

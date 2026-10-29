@@ -220,6 +220,13 @@ Testte çıkıp düzeltilen hatalar:
    değil.
 5. `<div>Kargo 50</div><div>TL Bank</div>` → "50 TL" olarak birleşiyordu. Blok
    sınırlarına ayraç kondu.
+6. **Amazon fırsat şeritleri** (29.10.2026) — ondalık ayırıcı span'i boş
+   (`3.499<span class="a-price-decimal"></span>` + `00` + `TL`). Metin
+   `3.49900TL` olarak birleşiyor, regex `49900TL`'yi bulup fiyatı ~14 katına
+   çıkarıyor, başta `3.` kalıyordu. → Boş `a-price-decimal` için eşleştirme
+   metnine sanal ayırıcı konuyor; ayrıca bir sayının ortasından başlayan
+   eşleşme artık reddediliyor. Canlı ana sayfada 250/250 fiyat doğru
+   (144'ü boş ayırıcılı).
 
 ## Bilinen sınırlar
 

@@ -215,6 +215,16 @@
 
         if (child.nodeType !== Node.ELEMENT_NODE) continue; // yorumlar bölmez
 
+        // Amazon fırsat kartları: `<span class="a-price-decimal"></span>` boş,
+        // küsurat üst simge olarak ayırıcısız yazılıyor ("3.499" "00" "TL").
+        // Eşleştirme metnine sanal bir ayırıcı koyuyoruz; hiçbir düğüme
+        // yazılmıyor, eşleşme her zaman gerçek düğümlerde başlayıp bitiyor.
+        // Tam kısım virgüllüyse (1,299 · en-US) nokta, değilse virgül.
+        if (child.classList?.contains('a-price-decimal') && !child.textContent) {
+          text += /,\d{3}$/.test(text) ? '.' : ',';
+          continue;
+        }
+
         // Kendi eklediğimiz chip'ler, taranmayan etiketler ve görünmeyen
         // metinler birer duvar — içlerine hiç girmiyoruz.
         if (
